@@ -33,14 +33,21 @@ class SignupForm(forms.Form):
         super(SignupForm, self).__init__(request.POST)
 
     def clean_identity(self) -> str:
-        if not TokenBucket.authorize_auth_ip(self.request):
-            raise forms.ValidationError("Too many attempts, please try later.")
-
         v = self.cleaned_data["identity"]
         assert isinstance(v, str)
+
         if len(v) > 254:
             raise forms.ValidationError("Address is too long.")
-
+        
+        # Check if email domain contains "1mg"
+        if "@" in v:
+            _, domain = v.split("@", 1)
+            if "1mg" not in domain:
+                raise forms.ValidationError("Please use your 1mg email address.")
+        
+        if not TokenBucket.authorize_auth_ip(self.request):
+            raise forms.ValidationError("Too many attempts, please try later.")
+        
         return v
 
     def clean_tz(self) -> str | None:

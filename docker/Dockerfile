@@ -1,4 +1,5 @@
-FROM python:3.13.1-slim-bookworm AS builder
+# FROM python:3.13.1-slim-bookworm AS builder
+FROM --platform=linux/amd64 python:3.13.1-slim-bookworm AS builder
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -45,5 +46,5 @@ RUN mkdir /data && chown hc /data
 USER hc
 
 ENV USE_GZIP_MIDDLEWARE=True
-HEALTHCHECK --start-period=20s --start-interval=5s --interval=60s --retries=1 CMD ./fetchstatus.py
-CMD [ "uwsgi", "/opt/healthchecks/docker/uwsgi.ini"]
+HEALTHCHECK --start-period=20s --interval=60s --retries=1 CMD ./fetchstatus.py
+# CMD [ "uwsgi", "/opt/healthchecks/docker/uwsgi.ini"]
