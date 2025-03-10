@@ -18,8 +18,10 @@
 
 services:
   web:
-    image: healthchecks1mg:1.1 # Use the pre-built image
-    container_name: healthchecks
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: healthchecks1mg_x86:latest
     env_file:
       - .env.example
     command: [ "uwsgi", "/opt/healthchecks/docker/uwsgi.ini" ]

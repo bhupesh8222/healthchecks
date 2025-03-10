@@ -4,6 +4,7 @@ FROM --platform=linux/amd64 python:3.13.1-slim-bookworm AS builder
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY requirements.txt /tmp
+
 RUN \
     apt-get update && \
     apt-get install -y build-essential curl libpq-dev libmariadb-dev libffi-dev libpcre2-dev libssl-dev libcurl4-openssl-dev libpython3-dev pkg-config
@@ -16,7 +17,8 @@ RUN \
     rm -rf /opt/healthchecks/.git && \
     rm -rf /opt/healthchecks/stuff
 
-FROM python:3.13.0-slim-bookworm
+# FROM python:3.13.0-slim-bookworm
+FROM --platform=linux/amd64 python:3.13.0-slim-bookworm
 
 RUN useradd --system hc
 ENV PYTHONUNBUFFERED=1
