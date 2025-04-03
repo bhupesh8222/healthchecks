@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from pyotp.totp import TOTP
+from django.conf import settings
 
 from hc.accounts.models import REPORT_CHOICES, Member
 from hc.api.models import TokenBucket
@@ -38,16 +39,16 @@ class SignupForm(forms.Form):
 
         if len(v) > 254:
             raise forms.ValidationError("Address is too long.")
-        
+
         # Check if email domain contains "1mg"
-        if "@" in v:
+        if "@" in v and not settings.DEBUG:  # Only check in non-debug mode
             _, domain = v.split("@", 1)
-            if "1mg" not in domain:
+            if domain != "1mg.com":  # Use exact equality check
                 raise forms.ValidationError("Please use your 1mg email address.")
-        
+
         if not TokenBucket.authorize_auth_ip(self.request):
             raise forms.ValidationError("Too many attempts, please try later.")
-        
+
         return v
 
     def clean_tz(self) -> str | None:

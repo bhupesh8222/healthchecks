@@ -82,6 +82,10 @@ def _make_user(email: str, tz: str | None = None, with_project: bool = True) -> 
     user.save()
 
     project = None
+
+    # dont create the default project when user is created
+    # This is intentional
+    with_project = False
     if with_project:
         project = Project(owner=user)
         project.badge_key = user.username

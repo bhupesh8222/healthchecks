@@ -12,9 +12,13 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
+from dotenv import load_dotenv
 
 from django.http.request import split_domain_port
 import django_stubs_ext
+
+# Load environment variables from .env file
+load_dotenv()
 
 django_stubs_ext.monkeypatch()
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,7 +64,7 @@ with (BASE_DIR / "CHANGELOG.md").open(encoding="utf-8") as f:
 
 
 INSTALLED_APPS = (
-    "hc.accounts",
+    "hc.accounts.apps.AccountsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
