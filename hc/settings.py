@@ -254,6 +254,7 @@ EMAIL_USE_TLS = envbool("EMAIL_USE_TLS", "True")
 EMAIL_USE_SSL = envbool("EMAIL_USE_SSL", "False")
 EMAIL_USE_VERIFICATION = envbool("EMAIL_USE_VERIFICATION", "True")
 EMAIL_MAIL_FROM_TMPL = os.getenv("EMAIL_MAIL_FROM_TMPL", "")
+SESSION_COOKIE_AGE = os.getenv("SESSION_COOKIE_AGE", 43200)
 
 # WebAuthn
 RP_ID = os.getenv("RP_ID")
